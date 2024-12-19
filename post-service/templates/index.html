@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guillermo Aka Maverick!</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: "Courier New", Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        button {
+            background-color: green;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: lime;
+        }
+        #counter-display {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello, World! :)</h1>
+    <button onclick="incrementCounter()">Increment Counter</button>
+    <button onclick="getCounter()">Get Counter</button>
+    <div id="counter-display"></div>
+
+    <script>
+        async function incrementCounter() {
+            try {
+                const response = await fetch('/increment', { method: 'POST' });
+                const data = await response.json();
+                console.log(data.message); // Optionally log the response
+            } catch (error) {
+                console.error("Error incrementing counter:", error);
+            }
+        }
+
+        async function getCounter() {
+            try {
+                const response = await fetch('/counter', { method: 'GET' });
+                const data = await response.json();
+                document.getElementById('counter-display').textContent = `Counter: ${data.counter}`;
+            } catch (error) {
+                console.error("Error fetching counter:", error);
+            }
+        }
+    </script>
+</body>
+</html>
