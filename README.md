@@ -1,60 +1,145 @@
-# Abraxas DevOps Exercise
+# Guillermo Aka Maverick - DevOps Exercise
 
-## Intro
+## Introduction
 
-Thank you for your interest and participation in our recruitment process for our DevOps Engineer position, to continue with the process we ask you to take the following technical test and share your result with us.
+This repository contains services designed to handle GET and POST endpoints, leveraging technologies like Kubernetes (k8s), Docker, CI/CD, GNU/Linux, Python, and web development. It demonstrates a scalable and robust architecture for deploying web applications.
 
-If you have any questions or comments during the test, do not hesitate to contact us by email at reclutamiento@grupoabraxas.com
+---
 
-## Get your environment ready
+## Setting Up Your Environment
 
-You'll need:
+Follow these steps to prepare your environment:
 
-1. A Github account
-2. A docker hub account
-3. Access to a kubernetes cluster for testing purposes (It can be Minikube or any other public or private option)
-4. Fork this repository, then clone it locally.
+### 1. Fork and Clone the Repository
 
-## Ready for action?
+1. Ensure GitHub is installed on your machine:
+   ```bash
+   github --help
+   ```
+2. Clone the repository:
+   ```bash
+   git clone https://github.com/GuilleX69/devops-exercise.git
+   ```
+3. Confirm you are logged in to GitHub via SSH:
+   - Generate a new SSH key:
+     ```bash
+     ssh-keygen
+     ```
+   - Copy the contents of `id_rsa.pub` and add it to your GitHub SSH keys under `Settings > SSH and GPG keys`.
 
-Great!!
-As a DevOps we need you to create a mechanism to deploy nanoservices. You'll be in charge of deploy, monitor, scale applications and promote the DevOps culture with the development team. But let's start by the begining, below you'll find the requirements for this test.
+### 2. Install Docker
 
-### Dockerize services
+1. Install Docker:
+   ```bash
+   sudo apt install docker.io
+   ```
+2. Verify installation:
+   ```bash
+   docker ps
+   ```
 
-Dockerize the given service at [app.py](app.py), including all it's required dependencies installed and ready to rock.
+### 3. Access a Kubernetes Cluster
 
-### CI/CD
+You can use Minikube or any other Kubernetes provider. To install Kubernetes tools on Linux:
+```bash
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+kubectl version --client
+```
 
-Implement a Github Actions workflow to build and publish your docker image on [docker hub](https://hub.docker.com/).
+### 4. Run the Applications
 
-### Deployment
+Once the environment is set up, proceed to run the services.
 
-Create a service configuration file to deploy the service on your kubernetes cluster and expose it to the world.
+---
 
-### Extra Points
+## Running the Application
 
-- Improve the given python service so it maintains a counter of the amount of **POST** requests it served, and return it on **GET** requests.
+### Pull the Docker Image
 
-## Deliverables
+1. Pull the image from Docker Hub:
+   ```bash
+   docker pull x69420x/guillermo-ramirez
+   ```
+2. Verify the image:
+   ```bash
+   docker image ls
+   ```
+   Expected output:
+   ```
+   REPOSITORY                    TAG       IMAGE ID       CREATED             SIZE
+   x69420x/guillermo-ramirez     latest    9441b6af3b42   About an hour ago   138MB
+   ```
 
-- A link to the public docker registry where the image is published.
+### Run the Application
 
-- A link to your repository containing:
+1. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Run the Docker container:
+   ```bash
+   docker run -d -p 5000:5000 -p 5001:5001 x69420x/guillermo-ramirez
+   ```
 
-    1. The Dockerfile(s) for the image(s).
-    2. The kubernetes file(s) for the service deployment(s). The deployment should be replicable on our kubernetes cluster.
-    3. Optionally the code for the improved version of the service.
+3. Access the application in your browser:
+   - Visit [http://localhost:5000](http://localhost:5000).
 
-## General Guidelines
+   The app provides:
+   - **Increment Counter**: Executes a POST request to increment a counter.
+   - **Get Counter**: Executes a GET request to display the counter value.
 
-Your code should be as simple as possible, yet well documented and robust.
-Spend some time on designing your solution. Think about operational use cases from the real world. Few examples:
+---
 
-1. What happens if a service crashes?
-2. How much effort will it take to create a new service? D.R.Y!
+## Deploying to Kubernetes
 
-## Reference
+### Validate Your Cluster
+
+1. Check cluster status:
+   ```bash
+   kubectl cluster-info
+   kubectl config use-context minikube
+   ```
+
+2. Start Minikube:
+   ```bash
+   minikube start
+   ```
+
+3. Confirm status:
+   ```bash
+   minikube status
+   ```
+
+### Deploy the Services
+
+1. Navigate to the Kubernetes deployment directory:
+   ```bash
+   cd k8s-deployments/
+   ```
+2. Deploy the services:
+   ```bash
+   kubectl apply -f post-service-deployment.yaml
+   kubectl apply -f post-service-service.yaml
+   ```
+3. Verify the deployment:
+   ```bash
+   kubectl get pods
+   kubectl get service post-service
+   ```
+
+### Expose the Service
+
+1. Expose the service to the world:
+   ```bash
+   minikube service post-service
+   ```
+2. Access the service at the provided URL (e.g., [http://127.0.0.1:46521](http://127.0.0.1:46521)).
+
+---
+
+## References
 
 - [Run a Stateless Application Using a Deployment](https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/)
 
