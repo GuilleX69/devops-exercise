@@ -8,6 +8,8 @@ This repository contains services designed to handle GET and POST endpoints, lev
 
 ## Setting Up Your Environment
 
+This test should run on a VM debian or ubuntu successfully.
+
 Follow these steps to prepare your environment:
 
 [+] - Ensure your VM have 2 CPUs in order to run minikube correctly.
